@@ -38,3 +38,14 @@ int Index::returnUrgency(){
 char * Index::returnName(){
 	return this->name;
 }
+TDList::TDList(){
+	
+}
+Index TDList::index(int i){
+	if(this->index.at[i]!=std::out_of_range){
+		return this->index.at[i];
+	}
+	else{
+		return null;
+	}
+}

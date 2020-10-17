@@ -1,7 +1,9 @@
 #include <string>
 
 #include <cstring>
+#include <vector>
 using std::wstring;
+using std::vector;
 namespace anyalarm{
 	// IU matrix는 중요도-긴급도 매트리스
 	class IU_matrix{
@@ -26,4 +28,11 @@ namespace anyalarm{
 			int returnUrgency();
 			char * returnName();
 	};
+	class TDList{
+		private:
+			Vector<Index> index;
+		public:
+			TDList();
+			Index index(int i);
+	}
 };
