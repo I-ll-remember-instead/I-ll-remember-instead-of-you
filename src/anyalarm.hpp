@@ -16,7 +16,7 @@ namespace anyalarm{
 			int returnImportance();
 			int returnUrgency();
 	};
-	class Index{
+	class Index{ // 내용물. 즉 할일과 중요도
 		private:
 			IU_matrix *matrix;
 			char name[1000];
@@ -27,12 +27,14 @@ namespace anyalarm{
 			int returnImportance();
 			int returnUrgency();
 			char * returnName();
+			void print();
 	};
-	class TDList{
+	class TDList{ // todo 리스트
 		private:
-			Vector<Index> index;
 		public:
+			vector<Index> indexes;
 			TDList();
 			Index index(int i);
-	}
+			void print();
+	};
 };

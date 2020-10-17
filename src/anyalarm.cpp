@@ -1,4 +1,6 @@
 #include "anyalarm.hpp"
+#include <stdexcept>
+
 
 using namespace anyalarm;
 
@@ -38,14 +40,22 @@ int Index::returnUrgency(){
 char * Index::returnName(){
 	return this->name;
 }
+void Index::print(){
+	// 여기 구현하기 내용물 출력
+}
+
+
 TDList::TDList(){
 	
 }
 Index TDList::index(int i){
-	if(this->index.at[i]!=std::out_of_range){
-		return this->index.at[i];
+	try{
+		return this->indexes.at(i);
+	}catch(std::out_of_range& e){
+		//
 	}
-	else{
-		return null;
-	}
+	return Index(0,0, (char*)"");
+}
+void TDList::print(){
+	// 여기도 구현하기 리스트 출력
 }
