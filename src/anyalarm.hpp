@@ -32,7 +32,7 @@ namespace anyalarm{
 	class TDList{ // todo 리스트
 		private:
 		public:
-			vector<Index> indexes;
+			vector<Index *> indexes;
 			TDList();
 			Index index(int i);
 			void print();

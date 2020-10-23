@@ -5,7 +5,8 @@ using namespace std;
 using namespace anyalarm;
 
 int main(int argc, char* argv[]) {
-	Index *a = new Index(1,2, (char*)"오");
-	wcout << (a->returnImportance()) << " "<< (a->returnUrgency()) << " " << (a->returnName());
+	TDList *a = new TDList();
+	a->indexes.push_back(new Index(1,1,"d"));
+	cout << (a->index(0).returnImportance()) << " "<< (a->index(0).returnUrgency()) << " " << (a->index(0).returnName());
 	return 0;
 }

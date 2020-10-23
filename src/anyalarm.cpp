@@ -50,7 +50,7 @@ TDList::TDList(){
 }
 Index TDList::index(int i){
 	try{
-		return this->indexes.at(i);
+		return *(this->indexes.at(i));
 	}catch(std::out_of_range& e){
 		//
 	}
@@ -58,6 +58,6 @@ Index TDList::index(int i){
 }
 void TDList::print(){
 	for(long long int i=0;i<indexes.size();i++){
-		indexes[i].print();
+		indexes[i]->print();
 	}
 }
