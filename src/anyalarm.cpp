@@ -41,7 +41,7 @@ char * Index::returnName(){
 	return this->name;
 }
 void Index::print(){
-	// 여기 구현하기 내용물 출력
+	printf("내용: %s - 중요도: %d 긴급도: %d", this->name, this->matrix->returnImportance(), this->matrix->returnUrgency());
 }
 
 
@@ -57,5 +57,7 @@ Index TDList::index(int i){
 	return Index(0,0, (char*)"");
 }
 void TDList::print(){
-	// 여기도 구현하기 리스트 출력
+	for(long long int i=0;i<indexes.size();i++){
+		indexes[i].print();
+	}
 }

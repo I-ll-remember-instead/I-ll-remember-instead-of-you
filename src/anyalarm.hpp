@@ -1,7 +1,7 @@
 #include <string>
-
 #include <cstring>
 #include <vector>
+#include <cstdio>
 using std::wstring;
 using std::vector;
 namespace anyalarm{
