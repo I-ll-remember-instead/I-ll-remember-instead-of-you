@@ -5,6 +5,52 @@
 #include <ctime>
 using std::wstring;
 using std::vector;
+
+#ifndef localtime_r
+#ifndef localtime_s
+#define localtime_r(i, j) localtime_s(j, i)
+#endif
+#endif
+
+#ifdef _WIN32
+   #include <conio.h>
+   #ifdef _WIN64
+		//
+   #endif
+#elif __APPLE__
+    #include "TargetConditionals.h"
+    #if TARGET_IPHONE_SIMULATOR
+         // iOS Simulator
+    #elif TARGET_OS_IPHONE
+        // iOS device
+    #elif TARGET_OS_MAC
+        // Other kinds of Mac OS
+    #else
+    #   error "Unknown Apple platform"
+    #endif
+#elif __linux__
+    #include <termio.h>
+	int getch(void){
+    	int ch;
+    	struct termios buf, save;
+    	tcgetattr(0,&save);
+    	buf = save;
+    	buf.c_lflag &= ~(ICANON|ECHO);
+    	buf.c_cc[VMIN] = 1;
+    	buf.c_cc[VTIME] = 0;
+    	tcsetattr(0, TCSAFLUSH, &buf);
+    	ch = getchar();
+    	tcsetattr(0, TCSAFLUSH, &save);
+    	return ch;
+	}
+#elif __unix__ // all unices not caught above
+    // Unix
+#elif defined(_POSIX_VERSION)
+    // POSIX
+#else
+#   error "Unknown compiler"
+#endif
+
 namespace anyalarm{
 	// IU matrix는 중요도-긴급도 매트리스
 	class IU_matrix{
@@ -13,6 +59,7 @@ namespace anyalarm{
 			int u=0; // 긴급도
 		public:
 			IU_matrix(int i, int u);
+			void set(int i, int u);
 			int* returnMatrix();
 			int returnImportance();
 			int returnUrgency();
@@ -38,6 +85,7 @@ namespace anyalarm{
 			void printEndTime();
 			void update();
 			int returnIU();
+			Index operator=(Index input);
 	};
 	class TDList{ // todo 리스트
 		private:
@@ -47,5 +95,6 @@ namespace anyalarm{
 			Index index(int i);
 			void print();
 			void push(Index * index1);
+			Index pop();
 	};
 };
