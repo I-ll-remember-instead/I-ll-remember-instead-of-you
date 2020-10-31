@@ -16,11 +16,14 @@ int main(int argc, char* argv[]) {
 	std::uniform_int_distribution<int> sdis(0, 59);
 	
 	std::uniform_int_distribution<int> iudis(0, 99);
+	std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
 	int y=ydis(gen), m=mdis(gen), d=ddis(gen), h=hdis(gen), min=mindis(gen), s=sdis(gen);
 	for(int i=0; i<100; i++){
 		y=ydis(gen); m=mdis(gen); d=ddis(gen); h=hdis(gen); min=mindis(gen); s=sdis(gen);
 		pushTDList(y,m,d,h,min,s,a,iudis(gen), iudis(gen), "message");
 	}
+	std::chrono::time_point<std::chrono::high_resolution_clock> end = std::chrono::high_resolution_clock::now();
+	auto diff = end - start;
 	return 0;
 }
 
