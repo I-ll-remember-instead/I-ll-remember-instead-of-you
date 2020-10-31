@@ -30,7 +30,9 @@ int IU_matrix::returnIU(){
 
 
 
-
+Index::Index(){
+	//
+}
 Index::Index(int i, int u, char name[],time_t term){
 	strcpy(this->name,name);
 	this->matrix=new IU_matrix(i,u);
@@ -92,8 +94,25 @@ void Index::update(){
 int Index::returnIU(){
 	return matrix->returnImportance()*(matrix->returnUrgency()+plusedU);
 }
+time_t* Index::returnTime(){
+	return Times;
+}
+int Index::returnTimesU(){
+	return timesU;
+}
+int Index::returnPlusedU(){
+	return plusedU;
+}
 Index Index::operator=(Index input){
 	this->matrix->set(input.matrix->returnImportance(), input.matrix->returnUrgency());
+	strcpy(this->name, input.returnName());
+	time_t * tBuff=input.returnTime();
+	this->Times[0]=tBuff[0];
+	this->Times[1]=tBuff[1];
+	this->Times[2]=tBuff[2];
+	this->timesU=input.returnTimesU();
+	this->plusedU=input.returnPlusedU();
+	return *this;
 }
 
 
@@ -114,10 +133,10 @@ void TDList::print(){
 		indexes[i]->update();
 		indexes[i]->print();
 	}
-}
-
+}	
+	
 void TDList::push(Index * index1){
-	int key=this->indexes.size();
+	int key=this->indexes.size(); //key=배열사이즈 즉 하나가 추가되었을 때의 끝 지점이다. 마지막 내용을 가리킴.
 	this->indexes.push_back(index1);
 	while(key>1){
 		if(this->indexes[key]->returnIU()>this->indexes[key/2]->returnIU()){
@@ -130,10 +149,36 @@ void TDList::push(Index * index1){
 	}
 }
 
-<<<<<<< HEAD
-Index TDList:
-=======
 Index TDList::pop(){
-
+	Index returnBuff=indexes.at(0);
+	int heapSize=indexes.size();
+	int key=0, nextkey;
+	Index tmp;
+	while(heapSize>=key*2){
+		if(key*2+1>heapSize && indexes[key*2].returnIU()>indexes[key].returnIU()){
+			try{
+				tmp=indexes.at(key*2);
+			}catch(std::out_of_range& e){
+				break;
+			}
+			key*=2;
+		}
+		else if (key * 2 + 1 > heapSize) break;
+		else {
+			if(indexes[key*2].returnIU()>indexes[key*2+1].returnIU()){
+				tmp = indexes[key * 2];
+				nextkey = key * 2;
+			}
+			else {
+				tmp = indexes[key * 2 + 1];
+				nextkey = key * 2 + 1;
+			}
+			if (tmp.returnIU() < indexes[key].returnIU()){
+				tmp=indexes[key];
+				indexes[key]=indexes[nextkey];
+				indexes[nextkey]=tmp;
+			}
+			else break;
+		}
+	}
 }
->>>>>>> d895d668b3d5df40d549852a188b76fa1cf669f4

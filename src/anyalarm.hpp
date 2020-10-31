@@ -7,7 +7,7 @@ using std::wstring;
 using std::vector;
 
 #ifndef localtime_r
-#ifndef localtime_s
+#ifdef localtime_s
 #define localtime_r(i, j) localtime_s(j, i)
 #endif
 #endif
@@ -29,20 +29,24 @@ using std::vector;
     #   error "Unknown Apple platform"
     #endif
 #elif __linux__
-    #include <termio.h>
-	int getch(void){
-    	int ch;
-    	struct termios buf, save;
-    	tcgetattr(0,&save);
-    	buf = save;
-    	buf.c_lflag &= ~(ICANON|ECHO);
-    	buf.c_cc[VMIN] = 1;
-    	buf.c_cc[VTIME] = 0;
-    	tcsetattr(0, TCSAFLUSH, &buf);
-    	ch = getchar();
-    	tcsetattr(0, TCSAFLUSH, &save);
-    	return ch;
-	}
+	#ifndef getch
+	/*
+    	#include <termio.h>
+		int getch(void){
+    		int ch;
+    		struct termios buf, save;
+    		tcgetattr(0,&save);
+    		buf = save;
+    		buf.c_lflag &= ~(ICANON|ECHO);
+    		buf.c_cc[VMIN] = 1;
+   			buf.c_cc[VTIME] = 0;
+    		tcsetattr(0, TCSAFLUSH, &buf);
+    		ch = getchar();
+    		tcsetattr(0, TCSAFLUSH, &save);
+    		return ch;
+		}
+		*/
+	#endif
 #elif __unix__ // all unices not caught above
     // Unix
 #elif defined(_POSIX_VERSION)
@@ -70,9 +74,10 @@ namespace anyalarm{
 			IU_matrix *matrix;
 			char name[1000];
 			time_t Times[3]; //1시작 시간 2끝 시간 3현재시간
-			const int timesU=1; // 값이 1이면 1마다 증가시킨다는 의미.
+			int timesU=1; // 값이 1이면 1마다 증가시킨다는 의미.
 			int plusedU=0; // 증가된 긴급도.
 		public:
+			Index();
 			Index(int i, int u, char name[], time_t term);
 			IU_matrix returnMatrix();
 			int * returnMatrixInt();
@@ -85,6 +90,9 @@ namespace anyalarm{
 			void printEndTime();
 			void update();
 			int returnIU();
+			time_t* returnTime();
+			int returnTimesU();
+			int returnPlusedU();
 			Index operator=(Index input);
 	};
 	class TDList{ // todo 리스트
