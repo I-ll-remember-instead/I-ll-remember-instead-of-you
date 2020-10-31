@@ -157,7 +157,7 @@ Index TDList::pop(){
 	while(heapSize>=key*2){
 		if(key*2+1>heapSize && indexes[key*2].returnIU()>indexes[key].returnIU()){
 			try{
-				tmp=indexes.at(key*2);
+				tmp=*indexes.at(key*2);
 			}catch(std::out_of_range& e){
 				break;
 			}
@@ -166,17 +166,17 @@ Index TDList::pop(){
 		else if (key * 2 + 1 > heapSize) break;
 		else {
 			if(indexes[key*2].returnIU()>indexes[key*2+1].returnIU()){
-				tmp = indexes[key * 2];
+				tmp = *indexes[key * 2];
 				nextkey = key * 2;
 			}
 			else {
-				tmp = indexes[key * 2 + 1];
+				tmp = *indexes[key * 2 + 1];
 				nextkey = key * 2 + 1;
 			}
 			if (tmp.returnIU() < indexes[key].returnIU()){
-				tmp=indexes[key];
+				tmp=*indexes[key];
 				indexes[key]=indexes[nextkey];
-				indexes[nextkey]=tmp;
+				*indexes[nextkey]=tmp;
 			}
 			else break;
 		}
