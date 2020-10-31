@@ -3,6 +3,8 @@
 #include <vector>
 #include <cstdio>
 #include <ctime>
+#include <random>
+#include <chrono>
 using std::wstring;
 using std::vector;
 
