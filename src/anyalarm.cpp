@@ -123,3 +123,5 @@ void TDList::push(Index * index1){
 		else break;
 	}
 }
+
+Index TDList:

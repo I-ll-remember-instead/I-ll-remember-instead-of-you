@@ -47,5 +47,6 @@ namespace anyalarm{
 			Index index(int i);
 			void print();
 			void push(Index * index1);
+			Index pop();
 	};
 };
