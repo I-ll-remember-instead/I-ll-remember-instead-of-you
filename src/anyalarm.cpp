@@ -8,6 +8,10 @@ IU_matrix::IU_matrix(int i, int u){
 	this->i=i;
 	this->u=u;
 }
+void IU_matrix::set(int i, int u){
+	this->i=i;
+	this->u=u;
+}
 int* IU_matrix::returnMatrix(){
 	int *a=new int[2];
 	a[0]=this->i;
@@ -88,7 +92,9 @@ void Index::update(){
 int Index::returnIU(){
 	return matrix->returnImportance()*(matrix->returnUrgency()+plusedU);
 }
-
+Index Index::operator=(Index input){
+	this->matrix->set(input.matrix->returnImportance(), input.matrix->returnUrgency());
+}
 
 
 
@@ -124,4 +130,10 @@ void TDList::push(Index * index1){
 	}
 }
 
+<<<<<<< HEAD
 Index TDList:
+=======
+Index TDList::pop(){
+
+}
+>>>>>>> d895d668b3d5df40d549852a188b76fa1cf669f4
