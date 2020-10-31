@@ -3,7 +3,7 @@
 
 using namespace std;
 using namespace anyalarm;
-
+void pushTDList(int y, int m, int d, int h, int min, int s, TDList * list, int i, int u, char * message);
 int main(int argc, char* argv[]) {
 	TDList *a = new TDList();
 	std::random_device rd;
@@ -24,6 +24,7 @@ int main(int argc, char* argv[]) {
 	}
 	std::chrono::time_point<std::chrono::high_resolution_clock> end = std::chrono::high_resolution_clock::now();
 	auto diff = end - start;
+	cout << diff.count();
 	return 0;
 }
 
@@ -40,7 +41,7 @@ void pushTDList(int y, int m, int d, int h, int min, int s, TDList * list, int i
 	time_t term=mktime(&buffTm);
 	if(term==-1){
 		printf("요류");
-		return 0;
+		return;
 	}
 	list->push(new Index(1,1,(char*)"d",term));
 }
