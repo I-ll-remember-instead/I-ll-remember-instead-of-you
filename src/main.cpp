@@ -3,32 +3,46 @@
 
 using namespace std;
 using namespace anyalarm;
-void pushTDList(int y, int m, int d, int h, int min, int s, TDList * list, int i, int u, char * message);
+void pushTDList(int y, int m, int d, int h, int min, int s, TDList * list, int i, int u, char message[]);
 int main(int argc, char* argv[]) {
+	vector<int> t;
+	srand(time(NULL));
 	TDList *a = new TDList();
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_int_distribution<int> ydis(2020, 2030);
-	std::uniform_int_distribution<int> mdis(1, 12);
-	std::uniform_int_distribution<int> ddis(28, 1);
-	std::uniform_int_distribution<int> hdis(0, 23);
-	std::uniform_int_distribution<int> mindis(0, 59);
-	std::uniform_int_distribution<int> sdis(0, 59);
+	for(int j=0; j<10; j++){
+		
 	
-	std::uniform_int_distribution<int> iudis(0, 99);
-	std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
-	int y=ydis(gen), m=mdis(gen), d=ddis(gen), h=hdis(gen), min=mindis(gen), s=sdis(gen);
-	for(int i=0; i<100; i++){
-		y=ydis(gen); m=mdis(gen); d=ddis(gen); h=hdis(gen); min=mindis(gen); s=sdis(gen);
-		pushTDList(y,m,d,h,min,s,a,iudis(gen), iudis(gen), "message");
+	for(int i=0; i<10; i++){
+		pushTDList(rand()%10+2020,rand()%12+1,rand()%28+1,rand()%24,rand()%60,rand()%60,a,rand()%99+1, rand()%99+1, (char *)"message");
 	}
+	a->print();
+	std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
+	//a->quickSort();
+	a->insertionSort();
+	//a->baillantSort();
+	//a->tjsxorSort();
+		
 	std::chrono::time_point<std::chrono::high_resolution_clock> end = std::chrono::high_resolution_clock::now();
 	auto diff = end - start;
-	cout << diff.count();
+	cout << diff.count() << "나노초\n" << diff.count()/1000.0 << "마이크로초\n" << diff.count()/1000000.0 << "밀리초";
+	
+	/*for(int i=0; i<100; i++){
+		a->pop().print();
+		printf("\n\n");
+	}*/
+	printf("\n\n정렬 후\n----------\n");
+	a->print();
+		t.push_back(diff.count());
+		getchar();
+	}
+	long long int sum=0;
+	for(int i=0; i<t.size(); i++){
+		sum+=t[i];
+	}
+	cout << (sum)/(t.size()) << "나노초\n";
 	return 0;
 }
 
-void pushTDList(int y, int m, int d, int h, int min, int s, TDList * list, int i, int u, char * message){
+void pushTDList(int y, int m, int d, int h, int min, int s, TDList * list, int i, int u, char message[]){
 	//scanf("%d %d %d %d %d %d", &y, &m, &d, &h, &min, &s);
 	struct tm buffTm;
 	buffTm.tm_year=y-1900;
@@ -43,5 +57,7 @@ void pushTDList(int y, int m, int d, int h, int min, int s, TDList * list, int i
 		printf("요류");
 		return;
 	}
-	list->push(new Index(1,1,(char*)"d",term));
+	
+	list->indexes.push_back(new Index(i,u,message,term));
+	
 }

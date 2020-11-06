@@ -1,6 +1,6 @@
 #include "anyalarm.hpp"
 #include <stdexcept>
-
+#include <queue>
 
 using namespace anyalarm;
 
@@ -31,6 +31,7 @@ int IU_matrix::returnIU(){
 
 
 Index::Index(){
+	this->matrix=new IU_matrix(0,0);
 	//
 }
 Index::Index(int i, int u, char name[],time_t term){
@@ -55,7 +56,7 @@ char * Index::returnName(){
 	return this->name;
 }
 void Index::print(){
-	printf("내용: %s - 중요도: %d 긴급도: %d\n", this->name, this->matrix->returnImportance(), this->matrix->returnUrgency()+plusedU);
+	printf("내용: %s - 중요도: %d 긴급도: %d 중요X긴급: %d\n", this->name, this->matrix->returnImportance(), this->matrix->returnUrgency()+plusedU, this->matrix->returnImportance()*(this->matrix->returnUrgency()+this->returnPlusedU()));
 	printStartTime();
 	printf("\n");
 	printEndTime();
@@ -132,6 +133,8 @@ void TDList::print(){
 	for(long long int i=0;i<indexes.size();i++){
 		indexes[i]->update();
 		indexes[i]->print();
+		printf("추가긴급도 %d", this->indexes[i]->returnPlusedU());
+		printf("\n");
 	}
 }	
 	
@@ -150,12 +153,17 @@ void TDList::push(Index * index1){
 }
 
 Index TDList::pop(){
-	Index returnBuff=indexes.at(0);
+	Index returnBuff;
+	try{
+		returnBuff=*(indexes.at(0));
+	}catch(std::out_of_range e){
+		return Index();
+	}
 	int heapSize=indexes.size();
 	int key=0, nextkey;
 	Index tmp;
 	while(heapSize>=key*2){
-		if(key*2+1>heapSize && indexes[key*2].returnIU()>indexes[key].returnIU()){
+		if(key*2+1>heapSize && indexes[key*2]->returnIU()>indexes[key]->returnIU()){
 			try{
 				tmp=*indexes.at(key*2);
 			}catch(std::out_of_range& e){
@@ -165,7 +173,7 @@ Index TDList::pop(){
 		}
 		else if (key * 2 + 1 > heapSize) break;
 		else {
-			if(indexes[key*2].returnIU()>indexes[key*2+1].returnIU()){
+			if(indexes[key*2]->returnIU()>indexes[key*2+1]->returnIU()){
 				tmp = *indexes[key * 2];
 				nextkey = key * 2;
 			}
@@ -173,7 +181,7 @@ Index TDList::pop(){
 				tmp = *indexes[key * 2 + 1];
 				nextkey = key * 2 + 1;
 			}
-			if (tmp.returnIU() < indexes[key].returnIU()){
+			if (tmp.returnIU() < indexes[key]->returnIU()){
 				tmp=*indexes[key];
 				indexes[key]=indexes[nextkey];
 				*indexes[nextkey]=tmp;
@@ -181,4 +189,128 @@ Index TDList::pop(){
 			else break;
 		}
 	}
+	return returnBuff;
 }
+
+void TDList::insertionSort(){
+	const int left=0; const int right=this->indexes.size()-1;
+  for (int i = left; i < right; ++i){
+    for (int j = i + 1; j > left && this->indexes[j]->returnIU()>this->indexes[j-1]->returnIU(); --j){
+      std::swap(this->indexes[j], this->indexes[j - 1]);
+    }
+  }
+}
+
+void TDList::quickSort(){
+	this->quick(0,this->indexes.size()-1);
+}
+
+void TDList::quick(int start,int end){
+	if (start >= end){
+		return;
+	}
+	int key = start;
+	int i = start + 1, j = end;
+	Index temp;
+	while(i<=j){
+		while(i <= end && this->indexes[i]->returnIU() <= this->indexes[key]->returnIU()){
+			i++;
+		}
+		while(j > start && this->indexes[j]->returnIU() >= this->indexes[key]->returnIU()){
+			j--;
+		}
+		if (i > j){
+			//std::swap(this->indexes[key],this->indexes[j]);
+			temp=*(this->indexes[j]);
+			*(this->indexes[j])=*(this->indexes[key]);
+			*(this->indexes[key])=temp;
+		}
+		else {
+			//std::swap(this->indexes[i],this->indexes[j]);
+			temp=*(this->indexes[i]);
+			*(this->indexes[i])=*(this->indexes[j]);
+			*(this->indexes[j])=temp;
+		}
+	}
+	
+	this->quick(start,j-1);
+	this->quick(j+1,end);
+}
+/*
+void TDList::radix(int begin, int end)
+{
+    
+}
+
+void TDList::heapSort(){
+	
+}
+
+void TDList::makeheap(int indsize){
+	for (int i=1;i<indsize;i++){
+		int c=i;
+		while(c>0){
+			int root=(i-1)/2;
+			if (this->indexes[root]->returnIU() < )
+		}
+	}
+}*/
+
+void TDList::baillantSort(){
+	std::queue<Index> radix[10]; // 자리수에 대한 큐 배열
+ 
+    int max = this->indexes[0]->returnIU();
+    int d = 1; // 최대자리수
+ 
+    // 최대 자리수를 구하기 위해서 최댓값을 찾아낸다.
+    for (int i = 1; i < this->indexes.size(); i++)
+        if (max < this->indexes[i]->returnIU()) max = this->indexes[i]->returnIU();
+ 
+    // 최대 자리수를 구해낸다.
+    while (max/10){
+        d *= 10;
+        max /= 10;
+    }
+ 
+    int mod = 10;
+    int dMin = 1;
+ 
+    while (dMin<=d){
+        // 자리수에 따라 큐에 집어넣는다.
+        for (int i = 0; i < indexes.size(); i++){
+            radix[(this->indexes[i]->returnIU() % mod)/dMin].push(*(this->indexes[i]));
+        }
+ 
+        // 큐에 들어간 값들을 자리수 크기 순으로 다시 배열에 집어넣는다.
+        for (int i = 0, j = 0; i < 10;){
+            if (radix[i].size()){
+                *(this->indexes[j++]) = radix[i].front();
+                radix[i].pop();
+            }
+            else i++;
+        }
+ 
+        dMin *= 10;
+        mod *= 10;
+    }
+ 
+    //for (int i = 0; i < 8; i++) std::cout << this->indexes[i] << ' ';
+ 
+    return;
+}
+
+/*void TDList::tjsxorSort(){
+	int min_idx;
+    for(int i=0; i<this->indexes->size(); i++){
+        min_idx = i;
+ 
+        for(int j=i+1; j<this->indexes->size(); j++){
+            if(this->indexes[min_idx]->returnIU() > this->indexes[j]->returnIU()){
+                min_idx = j;
+            }
+        }
+        std::swap(this->indexes[min_idx], this->indexes[i]);
+    }
+}*/
+
+

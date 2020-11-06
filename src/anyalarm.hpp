@@ -5,6 +5,7 @@
 #include <ctime>
 #include <random>
 #include <chrono>
+
 using std::wstring;
 using std::vector;
 
@@ -31,24 +32,6 @@ using std::vector;
     #   error "Unknown Apple platform"
     #endif
 #elif __linux__
-	#ifndef getch
-	/*
-    	#include <termio.h>
-		int getch(void){
-    		int ch;
-    		struct termios buf, save;
-    		tcgetattr(0,&save);
-    		buf = save;
-    		buf.c_lflag &= ~(ICANON|ECHO);
-    		buf.c_cc[VMIN] = 1;
-   			buf.c_cc[VTIME] = 0;
-    		tcsetattr(0, TCSAFLUSH, &buf);
-    		ch = getchar();
-    		tcsetattr(0, TCSAFLUSH, &save);
-    		return ch;
-		}
-		*/
-	#endif
 #elif __unix__ // all unices not caught above
     // Unix
 #elif defined(_POSIX_VERSION)
@@ -106,5 +89,11 @@ namespace anyalarm{
 			void print();
 			void push(Index * index1);
 			Index pop();
+			void insertionSort();
+			void quickSort();
+			void quick(int start,int end);
+			void radix();
+			void baillantSort();
+			void tjsxorSort();
 	};
 };
