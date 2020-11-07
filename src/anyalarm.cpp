@@ -319,7 +319,7 @@ void TDList::chooseSort(){
 	Index temp;
 	for (int i=0;i<this->indexes.size();i++){
 		minp=i;
-		for (int j=0;j<this->indexes.size();j++){
+		for (int j=i;j<this->indexes.size();j++){
 			if (this->indexes[j]->returnIU() < this->indexes[minp]->returnIU()){
 				minp=j;
 
