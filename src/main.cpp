@@ -5,20 +5,23 @@ using namespace std;
 using namespace anyalarm;
 void pushTDList(int y, int m, int d, int h, int min, int s, TDList * list, int i, int u, char message[]);
 int main(int argc, char* argv[]) {
+	int aS, bS;
+	scanf("%d %d", &aS, &bS);
 	vector<int> t;
 	srand(time(NULL));
 	TDList *a = new TDList();
-	for(int j=0; j<10; j++){
+	for(int j=0; j<aS; j++){
 		
 	
-	for(int i=0; i<10; i++){
+	for(int i=0; i<bS; i++){
 		pushTDList(rand()%10+2020,rand()%12+1,rand()%28+1,rand()%24,rand()%60,rand()%60,a,rand()%99+1, rand()%99+1, (char *)"message");
 	}
 	a->print();
 	std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
 	//a->quickSort();
-	//a->insertionSort();
-	a->chooseSort();
+	a->insertionSort();
+	//a->chooseSort();
+	//a->shellSort();
 		
 	std::chrono::time_point<std::chrono::high_resolution_clock> end = std::chrono::high_resolution_clock::now();
 	auto diff = end - start;

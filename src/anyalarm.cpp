@@ -331,3 +331,41 @@ void TDList::chooseSort(){
 		}
 	}
 }
+
+
+void TDList::shellSort(){
+	this->afshellSort(this->indexes.size());
+}
+
+void TDList::afshellSort(int count){
+	int interval=0;
+	interval=count/2;
+	while(interval >= 1){
+		for (int i=0;i<interval;i++){
+			this->shellinsertSort(i,count-1,interval);
+		}
+		
+		interval=interval/2;
+	}
+}
+
+void TDList::shellinsertSort(int start,int end,int interval){
+	int i;
+	
+	Index item = Index();
+	int ind=0;
+	for (i=start+interval;i<=end;i=i+interval){
+		item=*(this->indexes[i]);
+		ind=i-interval;
+		while((ind>=start) && item.returnIU() > this->indexes[ind]->returnIU()){
+			*(this->indexes[ind+interval])=*(this->indexes[ind]);
+			ind=ind-interval;
+		}
+		*(this->indexes[ind+interval])=item;
+	}
+	
+}
+
+
+
+
