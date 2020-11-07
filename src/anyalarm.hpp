@@ -95,5 +95,6 @@ namespace anyalarm{
 			void radix();
 			void baillantSort();
 			void tjsxorSort();
+			void chooseSort();
 	};
 };

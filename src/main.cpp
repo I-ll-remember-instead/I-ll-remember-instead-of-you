@@ -17,9 +17,8 @@ int main(int argc, char* argv[]) {
 	a->print();
 	std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
 	//a->quickSort();
-	a->insertionSort();
-	//a->baillantSort();
-	//a->tjsxorSort();
+	//a->insertionSort();
+	a->chooseSort();
 		
 	std::chrono::time_point<std::chrono::high_resolution_clock> end = std::chrono::high_resolution_clock::now();
 	auto diff = end - start;

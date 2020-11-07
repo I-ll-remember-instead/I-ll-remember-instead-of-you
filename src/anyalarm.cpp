@@ -254,7 +254,7 @@ void TDList::makeheap(int indsize){
 			if (this->indexes[root]->returnIU() < )
 		}
 	}
-}*/
+}
 
 void TDList::baillantSort(){
 	std::queue<Index> radix[10]; // 자리수에 대한 큐 배열
@@ -299,7 +299,7 @@ void TDList::baillantSort(){
     return;
 }
 
-/*void TDList::tjsxorSort(){
+void TDList::tjsxorSort(){
 	int min_idx;
     for(int i=0; i<this->indexes->size(); i++){
         min_idx = i;
@@ -311,6 +311,23 @@ void TDList::baillantSort(){
         }
         std::swap(this->indexes[min_idx], this->indexes[i]);
     }
-}*/
+}
+*/
 
+void TDList::chooseSort(){
+	int minp;
+	Index temp;
+	for (int i=0;i<this->indexes.size();i++){
+		minp=i;
+		for (int j=0;j<this->indexes.size();j++){
+			if (this->indexes[j]->returnIU() < this->indexes[minp]->returnIU()){
+				minp=j;
 
+				//minp=i; 요로코롬 하면 되나
+			}
+			temp=*(this->indexes[i]);
+			*(this->indexes[i]) = *(this->indexes[minp]);
+			*(this->indexes[minp]) = temp;
+		}
+	}
+}
